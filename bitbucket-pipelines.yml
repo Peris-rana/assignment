@@ -1,0 +1,15 @@
+image: atlassian/default-image:latest
+
+pipelines:
+  default:
+    - step:
+        name: Build and Push Docker Image
+        services:
+          - docker
+        script:
+          # login to docker hub
+          - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          # builds the docker image
+          - docker build -t "$DOCKER_USERNAME/app:latest" .
+          # push to docker hub
+          - docker push "$DOCKER_USERNAME/app:latest"
